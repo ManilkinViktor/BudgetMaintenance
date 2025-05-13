@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 
 class Wallet(models.Model):
@@ -107,7 +108,7 @@ class Transaction(models.Model):
         verbose_name='Тип операции'
     )
     date = models.DateTimeField(
-        auto_now_add=True,
+        default=timezone.now,
         verbose_name='Дата операции'
     )
     wallet = models.ForeignKey(

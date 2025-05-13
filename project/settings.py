@@ -56,7 +56,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +126,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'login'
+
+USE_L10N = False
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%dT%H:%M',  # '2006-10-25T14:30'
+    '%Y-%m-%d %H:%M',  # '2006-10-25 14:30'
+    '%m/%d/%Y %H:%M',  # '10/25/2006 14:30'
+    '%m/%d/%y %H:%M',  # '10/25/06 14:30'
+]
