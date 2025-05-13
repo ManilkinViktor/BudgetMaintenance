@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% if object %}Изменить{% else %}Добавить{% endif %} транзакцию</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        {{ form.amount.label_tag }}
+        {{ form.amount }}
+        {{ form.amount.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.type.label_tag }}
+        {{ form.type }}
+        {{ form.type.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.date.label_tag }}
+        {{ form.date }}
+        {{ form.date.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.wallet.label_tag }}
+        {{ form.wallet }}
+        {{ form.wallet.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.category.label_tag }}
+        {{ form.category }}
+        {{ form.category.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.comment.label_tag }}
+        {{ form.comment }}
+        {{ form.comment.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'transaction_list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
