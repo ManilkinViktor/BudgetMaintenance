@@ -51,7 +51,8 @@ nav {
     list-style: none;
 }
 
-.nav-links li {
+.nav-links li,
+.nav-links form {
     margin-left: 1.5rem;
 }
 

@@ -17,7 +17,12 @@
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'transaction_list' %}">Главная</a></li>
                         <li><a href="{% url 'transaction_create' %}">Добавить запись</a></li>
-                        <li><a href="{% url 'logout' %}">Выйти</a></li>
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </button>
+                        </form>
                     {% else %}
                         <li><a href="{% url 'login' %}">Войти</a></li>
                         <li><a href="{% url 'signup' %}">Регистрация</a></li>

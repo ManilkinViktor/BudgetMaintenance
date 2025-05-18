@@ -136,3 +136,5 @@ DATETIME_INPUT_FORMATS = [
     '%m/%d/%Y %H:%M',  # '10/25/2006 14:30'
     '%m/%d/%y %H:%M',  # '10/25/06 14:30'
 ]
+
+LOGOUT_REDIRECT_URL = 'home'
