@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Мои кошельки</h2>
+<a href="{% url 'wallet_create' %}" class="btn btn-primary">Добавить кошелёк</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Сумма</th>
+            <th>Пропорция</th>
+            <th>Описание</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for wallet in wallets %}
+        <tr>
+            <td>{{ wallet.title }}</td>
+            <td>{{ wallet.amount }}</td>
+            <td>{{ wallet.proportion }}</td>
+            <td>{{ wallet.description }}</td>
+            <td>
+                <a href="{% url 'wallet_update' wallet.pk %}" class="btn btn-sm btn-outline-secondary">Изменить</a>
+                <a href="{% url 'wallet_delete' wallet.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
