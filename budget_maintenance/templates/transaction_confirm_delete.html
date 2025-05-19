@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление транзакции{% endblock %}
+
+{% block content %}
+<div class="delete-confirmation">
+    <h2>Подтверждение удаления</h2>
+    <div class="confirmation-warning">
+        <i class="fas fa-exclamation-triangle warning-icon"></i>
+        <p>Вы уверены, что хотите удалить эту транзакцию?</p>
+    </div>
+
+    <div class="transaction-details">
+        <p><strong>Дата:</strong> {{ transaction.date|date:"d.m.Y H:i" }}</p>
+        <p><strong>Сумма:</strong> {{ transaction.amount }} ₽</p>
+        <p><strong>Тип:</strong> {{ transaction.get_type_display }}</p>
+        <p><strong>Категория:</strong> {{ transaction.category.title|default:"-" }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Удалить
+            </button>
+            <a href="{% url 'transaction_list' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

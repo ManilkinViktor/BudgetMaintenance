@@ -12,6 +12,7 @@
             <th>Тип</th>
             <th>Кошелек</th>
             <th>Категория</th>
+            <th>Комментарий</th>
             <th>Действия</th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
             <td>{{ transaction.get_type_display }}</td>
             <td>{{ transaction.wallet.title }}</td>
             <td>{{ transaction.category.title|default:"-" }}</td>
+            <td>{{ transaction.comment }}</td>
             <td>
                 <a href="{% url 'transaction_update' transaction.pk %}" class="btn btn-sm btn-outline-secondary">Изменить</a>
                 <a href="{% url 'transaction_delete' transaction.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>

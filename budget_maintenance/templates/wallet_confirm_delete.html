@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление кошелька{% endblock %}
+
+{% block content %}
+<div class="delete-confirmation">
+    <h2>Подтверждение удаления</h2>
+    <div class="confirmation-warning">
+        <i class="fas fa-exclamation-triangle warning-icon"></i>
+        <p>Вы уверены, что хотите удалить кошелек "{{ wallet.title }}"?</p>
+    </div>
+
+    <div class="wallet-details">
+        <p><strong>Баланс:</strong> {{ wallet.amount }} ₽</p>
+        <p><strong>Транзакций:</strong> {{ wallet.transaction_set.count }}</p>
+    </div>
+
+    {% if wallet.amount != 0 or wallet.transaction_set.count > 0 %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        Внимание! Этот кошелек содержит средства или транзакции. Удаление приведет к потере данных.
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Удалить
+            </button>
+            <a href="{% url 'wallet_list' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

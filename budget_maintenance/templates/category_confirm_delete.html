@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление категории{% endblock %}
+
+{% block content %}
+<div class="delete-confirmation">
+    <h2>Подтверждение удаления</h2>
+    <div class="confirmation-warning">
+        <i class="fas fa-exclamation-triangle warning-icon"></i>
+        <p>Вы уверены, что хотите удалить категорию "{{ category.title }}"?</p>
+    </div>
+
+    <div class="category-info">
+        <p><strong>Тип:</strong> {{ category.get_type_display }}</p>
+        <p><strong>Транзакций:</strong> {{ category.transaction_set.count }}</p>
+    </div>
+
+    {% if category.transaction_set.count > 0 %}
+    <div class="alert alert-warning">
+        <i class="fas fa-info-circle"></i>
+        Эта категория содержит транзакции. Они будут переведены в категорию "Без категории".
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Удалить
+            </button>
+            <a href="{% url 'category_list' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
