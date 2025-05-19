@@ -3,7 +3,7 @@ from . import models
 
 # Register your models here.
 
-admin.register(models.Wallet)
-admin.register(models.Transaction)
-admin.register(models.Category)
-admin.register(models.Transfer)
+admin.site.register(models.Wallet)
+admin.site.register(models.Transaction)
+admin.site.register(models.Category)
+admin.site.register(models.Transfer)
