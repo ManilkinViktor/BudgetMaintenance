@@ -1,13 +1,13 @@
 from django.urls import path, include
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView, LoginView
 from . import views
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', views.SignUpView.as_view(), name='signup'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
-
+    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 
     # Transaction URLs
     path('transactions/', views.TransactionListView.as_view(), name='transaction_list'),
