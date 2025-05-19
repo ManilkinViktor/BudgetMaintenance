@@ -15,7 +15,10 @@
                 <div class="logo">Budget Planner</div>
                 <ul class="nav-links">
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'transaction_list' %}">Главная</a></li>
+                        <li><a href="{% url 'home' %}">Главная</a></li>
+                        <li><a href="{% url 'wallet_list' %}">Кошельки</a></li>
+                        <li><a href="{% url 'category_list' %}">Категории</a></li>
+                        <li><a href="{% url 'transaction_list' %}">Записи</a></li>
                         <li><a href="{% url 'transaction_create' %}">Добавить запись</a></li>
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}
@@ -24,6 +27,7 @@
                             </button>
                         </form>
                     {% else %}
+                        <li><a href="{% url 'home' %}">Главная</a></li>
                         <li><a href="{% url 'login' %}">Войти</a></li>
                         <li><a href="{% url 'signup' %}">Регистрация</a></li>
                     {% endif %}

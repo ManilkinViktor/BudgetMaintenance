@@ -328,3 +328,29 @@ footer {
     color: #721c24;
     border-left: 4px solid #f5c6cb;
 }
+
+/* Стили для таблицы */
+.table {
+    width: 100%;
+    border-collapse: separate;  /* Важно для spacing */
+    border-spacing: 0 10px;    /* Горизонтальное и вертикальное расстояние */
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;        /* Увеличиваем отступы внутри ячеек */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Дополнительные стили для кнопок действий */
+.table .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin: 0 2px;
+}
