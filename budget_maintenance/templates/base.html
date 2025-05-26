@@ -16,6 +16,7 @@
                 <ul class="nav-links">
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'home' %}">Главная</a></li>
+                        <li><a href="{% url 'stats' %}">Статистика</a></li>
                         <li><a href="{% url 'wallet_list' %}">Кошельки</a></li>
                         <li><a href="{% url 'category_list' %}">Категории</a></li>
                         <li><a href="{% url 'transaction_list' %}">Записи</a></li>
@@ -52,7 +53,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; {% now "Y" %} Budget Planner. Все права защищены.</p>
+            <p></p>
         </div>
     </footer>
 </body>

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="stats-container">
+    <h2>Финансовая статистика</h2>
+
+    <div class="filters card">
+        <form method="get" class="filter-form">
+            <div class="form-row">
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="period-info">
+        <h3>Период: с {{ start_date|date:"d.m.Y" }} по {{ end_date|date:"d.m.Y" }}</h3>
+    </div>
+
+    <!-- Общая статистика -->
+    <div class="summary-stats">
+        <div class="stat-card income">
+            <h3>Доходы</h3>
+            <p class="amount">{{ total_income }} ₽</p>
+        </div>
+        <div class="stat-card expense">
+            <h3>Расходы</h3>
+            <p class="amount">{{ total_expense }} ₽</p>
+        </div>
+        <div class="stat-card balance">
+            <h3>Баланс</h3>
+            <p class="amount">{{ balance }} ₽</p>
+        </div>
+    </div>
+
+    <!-- Таблицы с детализацией -->
+    <div class="detailed-stats">
+        <div class="category-table">
+            <h3>Детализация доходов</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Сумма</th>
+                        <th>Доля</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in income_by_category %}
+                    <tr>
+                        <td>{{ item.category__title|default:"Без категории" }}</td>
+                        <td>{{ item.total }} ₽</td>
+                        <td>{{ item.part|floatformat:2 }}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Нет данных о доходах</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="category-table">
+            <h3>Детализация расходов</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Сумма</th>
+                        <th>Доля</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in expense_by_category %}
+                    <tr>
+                        <td>{{ item.category__title|default:"Без категории" }}</td>
+                        <td>{{ item.total }} ₽</td>
+                        <td>{{ item.total|floatformat:2 }}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Нет данных о расходах</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django import forms
 from django.db.models import Sum
 from django.utils import timezone
@@ -7,6 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, T
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Category, Wallet
+from .forms import StatsFilterForm
 
 
 class HomeView(TemplateView):
@@ -193,3 +196,55 @@ class WalletDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Wallet.objects.filter(user=self.request.user)
+
+
+
+
+
+class StatsView(TemplateView):
+    template_name = 'stats.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = StatsFilterForm(self.request.user, self.request.GET or None)
+
+        if form.is_valid():
+            wallet_id = form.cleaned_data['wallet']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+        else:
+            wallet_id = 'all'
+            end_date = timezone.now().date()
+            start_date = end_date - timedelta(days=30)
+
+        # Фильтрация транзакций
+        transactions = Transaction.objects.filter(
+            user=self.request.user,
+            date__date__range=[start_date, end_date]
+        )
+
+        if wallet_id != 'all':
+            transactions = transactions.filter(wallet_id=wallet_id)
+
+        # Статистика
+        total_income = transactions.filter(type='income').aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expence = transactions.filter(type='expense').aggregate(Sum('amount'))['amount__sum'] or 0
+
+        income_by_category = transactions.filter(type='income').values('category__title').annotate(
+            total=Sum('amount'), part=100 * Sum('amount') / total_income if total_income else 0)
+        expense_by_category = transactions.filter(type='expense').values('category__title').annotate(
+            total=Sum('amount'), part=100 * Sum('amount') / total_expence if total_expence else 0)
+
+
+
+        context.update({
+            'form': form,
+            'start_date': start_date,
+            'end_date': end_date,
+            'income_by_category': income_by_category,
+            'expense_by_category': expense_by_category,
+            'total_income': total_income,
+            'total_expense': total_expence,
+            'balance': total_income - total_expence,
+        })
+        return context
