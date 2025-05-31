@@ -230,11 +230,17 @@ class StatsView(TemplateView):
         total_income = transactions.filter(type='income').aggregate(Sum('amount'))['amount__sum'] or 0
         total_expence = transactions.filter(type='expense').aggregate(Sum('amount'))['amount__sum'] or 0
 
-        income_by_category = transactions.filter(type='income').values('category__title').annotate(
-            total=Sum('amount'), part=100 * Sum('amount') / total_income if total_income else 0)
-        expense_by_category = transactions.filter(type='expense').values('category__title').annotate(
-            total=Sum('amount'), part=100 * Sum('amount') / total_expence if total_expence else 0)
+        if total_income:
+            income_by_category = transactions.filter(type='income').values('category__title').annotate(
+                total=Sum('amount'), part=100 * Sum('amount') / total_income)
+        else:
+            income_by_category = transactions.filter(type='income').values('category__title').annotate(total=Sum('amount'))
 
+        if total_expence:
+            expense_by_category = transactions.filter(type='expense').values('category__title').annotate(
+                total=Sum('amount'), part=100 * Sum('amount') / total_expence if total_expence else 0)
+        else:
+            expense_by_category = transactions.filter(type='expense').values('category__title').annotate(total=Sum('amount'))
 
 
         context.update({

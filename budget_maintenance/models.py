@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -87,7 +88,6 @@ class Transaction(models.Model):
     TRANSACTION_TYPES = [
         ('income', 'Доход'),
         ('expense', 'Расход'),
-        ('transfer', 'Перевод'),
     ]
 
     user = models.ForeignKey(
@@ -147,7 +147,31 @@ class Transaction(models.Model):
             ).first()
             if default_category:
                 self.category = default_category
-        super().save(*args, **kwargs)
+        is_new = self._state.adding
+        if is_new:
+            super().save(*args, **kwargs)
+            self.update_wallet_amount()
+        else:
+            self.update_wallet_amount(cancel=True)
+            super().save(*args, **kwargs)
+            self.update_wallet_amount()
+
+    def delete(self, *args, **kwargs):
+        self.update_wallet_amount(cancel=True)
+        super().delete(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+        if self.amount < 0:
+            raise ValidationError({'amount': 'Сумма транзакции не может быть отрицательной.'})
+
+    def update_wallet_amount(self, cancel=False):
+        wallet = self.wallet
+        if self.type == 'income' or (self.type == 'expense' and cancel):
+            wallet.amount += self.amount
+        else:
+            wallet.amount -= self.amount
+        wallet.save()
 
 
 class Transfer(models.Model):
