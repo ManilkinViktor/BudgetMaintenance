@@ -143,3 +143,5 @@ LOGIN_REDIRECT_URL = 'home'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+ATOMIC_REQUESTS = True  # Каждый запрос будет обернут в транзакцию
